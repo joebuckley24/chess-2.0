@@ -1,17 +1,5 @@
 import numpy as np
-import re
-
-## add lookbehind for first set of digits and x, a number or x shouldn't be first character
-CASTLE = "[0Oo](?:-[0Oo]){1,2}"
-CASTLE_REGEX = re.compile(CASTLE)
-# KING_MOVE = "K(x?)([a-h][1-8])" # 1.capture 2.end
-PIECE_MOVE = "([RNBQK])(?:(?<!K)([a-h]?[1-8]?))?(x?)([a-h][1-8])" # 1.piece 2.disambiguation 3.capture 4.end
-PAWN_MOVE = "([a-h]x?)?([a-h][1-8])(?<=[18])(?:=?([RNBQ]))" # 1.disambiguation 2.end 3.promotion
-ALGEBRAIC_NOTATION_REGEX = re.compile("([KQRNB]?[a-h]?[1-8]?x?[a-h][1-8](\\=[QRNB])?|[O0]-[O0](-[O0])?)[+#]?")
-PIECE_MOVE_REGEX = re.compile(PIECE_MOVE)
-PAWN_MOVE_REGEX = re.compile(PAWN_MOVE)
-## trim all whitespace
-## make sure to add optional check/checkmate to all moves
+from constants import *
 
 def coord_to_index(coord_str):
     coord = list(coord_str)
@@ -54,33 +42,34 @@ def regex_loop():
 def regex_groups(compiled, notation_str):
     return compiled.match(notation_str).groups(default="")
 
-def process(string_move):
-    # if castle:
-    #     castle_logic()
-    # elif king_move:
-    #     king_logic()
-    # elif pawn_move:
-    #     pawn_logic()
-    # elif queen_move:
-    #     queen_logic()
-    # elif rook_move:
-    #     rook_logic()
-    # elif bishop_move:
-    #     bishop_logic()
-    # elif knight_move:
-    #     knight_logic()
-    pass
+def get_move(trimmed_input):
+    # return groups: 0 piece 1 disambiguation 2 capture 3 end 4 promotion 5 check
+    if m := PAWN_MOVE_CHECK_REGEX.match(trimmed_input):
+        # groups: 0 disambiguation 1 end 2 promotion 3 check
+        if m[0] == "":
+            return ("", "", "", m[1], m[2], m[3])
+        return ("", m[0][0], "x", m[1], m[2], m[3])
+    elif m := PIECE_MOVE_CHECK_REGEX.match(trimmed_input):
+        # groups: 0 piece 1 disambiguation 2 capture 3 end 4 check
+        return (m[0], m[1], m[2], m[3], "", m[4])
+    elif m := CASTLE_CHECK_REGEX.match(trimmed_input):
+        # groups: 0 check
+        if len(m.string) == 3:
+            return ("0-0", "", "", "", "", m[0])
+        return ("0-0-0", "", "", "", "", m[0])
+    raise ValueError("malformed algebraic notation")
+
 
 if __name__ == "__main__":
-    # b = init_board()
-    # print(printable_board(b))
-    # while True:
-    #     s = input("square from which piece should move (e.g. e2): ")
-    #     if s == "q":
-    #         break
-    #     e = input("square to which piece should move (e.g. e4): ")
-    #     if e == "q":
-    #         break
-    #     move_piece(b, s, e)
-    #     print(printable_board(b))
-    regex_loop()
+    b = init_board()
+    print(printable_board(b))
+    while True:
+        s = input("square from which piece should move (e.g. e2): ")
+        if s == "q":
+            break
+        e = input("square to which piece should move (e.g. e4): ")
+        if e == "q":
+            break
+        move_piece(b, s, e)
+        print(printable_board(b))
+    # regex_loop()
