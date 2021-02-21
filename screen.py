@@ -63,13 +63,31 @@ def get_move(trimmed_input):
 if __name__ == "__main__":
     b = init_board()
     print(printable_board(b))
-    while True:
-        s = input("square from which piece should move (e.g. e2): ")
-        if s == "q":
-            break
-        e = input("square to which piece should move (e.g. e4): ")
-        if e == "q":
-            break
-        move_piece(b, s, e)
-        print(printable_board(b))
+    white = True
+    game = True
+    while game:
+        user_in = input("Enter a move in algebraic notation, " 
+                        + "white" if white else "black"
+                        + " to play (h for help, q to quit): ").strip()
+        try:
+            move = get_move(user_in)
+            # move_board(move)
+            white = not white
+        except ValueError as ve:
+            user_in = user_in.lower
+            if user_in == "h" or user_in == "help":
+                call_help()
+            if m == "q" or m == "quit" or m == "exit":
+                game = not game
+    print("Thanks for playing!")
+
+    # while True:
+    #     s = input("square from which piece should move (e.g. e2): ")
+    #     if s == "q":
+    #         break
+    #     e = input("square to which piece should move (e.g. e4): ")
+    #     if e == "q":
+    #         break
+    #     move_piece(b, s, e)
+    #     print(printable_board(b))
     # regex_loop()
