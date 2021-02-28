@@ -1,22 +1,8 @@
-import numpy as np
 from constants import *
 
 def coord_to_index(coord_str):
     coord = list(coord_str)
     return (int(coord[1]) - 1, ord(coord[0].lower()) - 97)
-
-def init_board():
-    white_back_rank = ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]
-    white_pawns = ["\u2659"]*8
-    black_back_rank = ["\u265C", "\u265E", "\u265D", "\u265B", "\u265A", "\u265D", "\u265E", "\u265C"]
-    black_pawns = ["\u265F"]*8
-    board = np.array([white_back_rank, 
-                      white_pawns, 
-                      [" "]*8, [" "]*8, [" "]*8, [" "]*8, 
-                      black_pawns, 
-                      black_back_rank], 
-                     dtype="U")
-    return board
 
 def printable_board(board):
     printable = ["| " + " | ".join(row) + " |" for row in reversed(board)]
@@ -59,9 +45,15 @@ def get_move(trimmed_input):
         return ("0-0-0", "", "", "", "", m[0])
     raise ValueError("malformed algebraic notation")
 
+def get_starting_squares(board, color, piece_char):
+    unicode_piece_char = PIECES_DICT[color, piece_char]
+    return np.where(board == unicode_piece_char)
+
+def check_legal_move(board, color, move):
+    i, j = get_starting_squares()
 
 if __name__ == "__main__":
-    b = init_board()
+    b = NEW_BOARD
     print(printable_board(b))
     white = True
     game = True
@@ -77,7 +69,7 @@ if __name__ == "__main__":
             user_in = user_in.lower
             if user_in == "h" or user_in == "help":
                 call_help()
-            if m == "q" or m == "quit" or m == "exit":
+            elif user_in == "q" or user_in == "quit" or user_in == "exit":
                 game = not game
     print("Thanks for playing!")
 
