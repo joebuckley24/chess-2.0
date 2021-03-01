@@ -1,5 +1,6 @@
 import numpy as np
 import re
+from itertools import permutations
 
 CASTLE = "[0Oo](?:-[0Oo]){1,2}"
 CASTLE_REGEX = re.compile(CASTLE)
