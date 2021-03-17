@@ -24,20 +24,20 @@ PAWN_MOVE_CHECK_REGEX = re.compile(PAWN_MOVE_CHECK)
 
 # ALGEBRAIC_NOTATION_REGEX = re.compile("([KQRNB]?[a-h]?[1-8]?x?[a-h][1-8](\\=[QRNB])?|[O0]-[O0](-[O0])?)[+#]?")
 
-PIECES_DICT = {
-    (True, "K"): "\u2654",
-    (True, "Q"): "\u2655",
-    (True, "R"): "\u2656",
-    (True, "B"): "\u2657",
-    (True, "N"): "\u2658",
-    (True, " "): "\u2659",
-    (False, "K"): "\u265A",
-    (False, "Q"): "\u265B",
-    (False, "R"): "\u265C",
-    (False, "B"): "\u265D",
-    (False, "N"): "\u265E",
-    (False, " "): "\u265F"
-}
+# PIECES_DICT = {
+#     (True, "K"): "\u2654",
+#     (True, "Q"): "\u2655",
+#     (True, "R"): "\u2656",
+#     (True, "B"): "\u2657",
+#     (True, "N"): "\u2658",
+#     (True, " "): "\u2659",
+#     (False, "K"): "\u265A",
+#     (False, "Q"): "\u265B",
+#     (False, "R"): "\u265C",
+#     (False, "B"): "\u265D",
+#     (False, "N"): "\u265E",
+#     (False, " "): "\u265F"
+# }
 
 NEW_BOARD = np.array(
     [
